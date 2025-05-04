@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import open from "open";
 
 dotenv.config();
 
@@ -34,7 +35,8 @@ export async function generateImageWithReplicate(
   prompt: string,
   options: Partial<ReplicatePredictionInput> = {}
 ): Promise<string> {
-  const apiToken = process.env.REPLICATE_API_TOKEN;
+  // const apiToken = process.env.REPLICATE_API_TOKEN;
+  const apiToken = "r8_TrKT8GSQWq9gaxbFPHSuTJXoUmN7qbC2nsfdw";
   if (!apiToken) {
     throw new Error("REPLICATE_API_TOKEN environment variable is not set");
   }
@@ -98,4 +100,10 @@ export async function generateImageWithReplicate(
     console.error("Error generating image with Replicate:", error);
     throw error;
   }
+}
+
+//function to display the genetated image
+export async function displayGeneratedImage(imageUrl: string): Promise<void> {
+  await open(imageUrl);
+  console.log(`Image displayed at ${imageUrl}`);
 }

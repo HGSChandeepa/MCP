@@ -2,7 +2,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { makeNWSRequest } from "./tools/weather.js";
-import { generateImageWithReplicate } from "./tools/image-gen.js";
+import {
+  displayGeneratedImage,
+  generateImageWithReplicate,
+} from "./tools/image-gen.js";
 
 const NWS_API_BASE = "https://api.weather.gov";
 
@@ -231,15 +234,15 @@ server.tool(
     }
 
     // Fetch the image and convert to base64
-    // const response = await fetch(imageUrl);
-    // const arrayBuffer = await response.arrayBuffer();
-    // const base64Data = Buffer.from(arrayBuffer).toString("base64");
+    const response = await fetch(imageUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const base64Data = Buffer.from(arrayBuffer).toString("base64");
 
     // return {
     //   content: [
     //     {
     //       type: "image",
-    //       data: ,
+    //       data: base64Data,
     //       mimeType: "image/jpeg",
     //     },
     //   ],
@@ -250,6 +253,27 @@ server.tool(
         {
           type: "text",
           text: `Generated image URL: ${imageUrl}`,
+        },
+      ],
+    };
+  }
+);
+
+//tool to open the image
+
+server.tool(
+  "display_generated_image",
+  "This function will display the generated image in a new tab",
+  {
+    imageUrl: z.string().describe("The URL of the generated image"),
+  },
+  async ({ imageUrl }) => {
+    await displayGeneratedImage(imageUrl);
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Image displayed at ${imageUrl}`,
         },
       ],
     };
