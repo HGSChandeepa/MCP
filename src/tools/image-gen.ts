@@ -35,8 +35,7 @@ export async function generateImageWithReplicate(
   prompt: string,
   options: Partial<ReplicatePredictionInput> = {}
 ): Promise<string> {
-  // const apiToken = process.env.REPLICATE_API_TOKEN;
-  const apiToken = "r8_TrKT8GSQWq9gaxbFPHSuTJXoUmN7qbC2nsfdw";
+  const apiToken = process.env.REPLICATE_API_TOKEN;
   if (!apiToken) {
     throw new Error("REPLICATE_API_TOKEN environment variable is not set");
   }
